@@ -54,8 +54,10 @@ enum AHT20{
     HUM
 
 }
-
-//% weight=100 color=#0fbc11 icon="" block="Xia Mi Board"
+//094
+//1d8
+//1e3
+//% weight=100 color=#0fbc11 icon="" block="xia_mi Board"
 namespace pinpong {
 
     const i2cAddr = 0x10;
