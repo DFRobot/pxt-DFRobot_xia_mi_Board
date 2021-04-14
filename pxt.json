@@ -1,5 +1,5 @@
 {
-    "name": "DFRobot_PinPong",
+    "name": "DFRobot_Xia_Mi_Board",
     "version": "0.0.11",
     "description": "",
     "dependencies": {
@@ -13,7 +13,7 @@
         "sendBuffer.asm",
         "ws2812b.ts",
         "NecIR.cpp",
-        "_locales/zh-cn/DFRobot_PinPong-strings.json",
+        "_locales/zh-cn/DFRobot_Xia_Mi_Board-strings.json",
         "shims.d.ts",
         "enums.d.ts"
     ],

@@ -55,7 +55,7 @@ enum AHT20{
 
 }
 
-//% weight=100 color=#0fbc11 icon="" block="PinPong"
+//% weight=100 color=#0fbc11 icon="" block="Xia Mi Board"
 namespace pinpong {
 
     const i2cAddr = 0x10;
