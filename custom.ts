@@ -58,7 +58,7 @@ enum AHT20{
 //1d8
 //1e3
 //% weight=100 color=#0fbc11 icon="" block="xia_mi Board"
-namespace pinpong {
+namespace xiamiBoard{
 
     const i2cAddr = 0x10;
     let irstate:number;
@@ -237,10 +237,7 @@ namespace pinpong {
     /**
     * Initialize OLED, just put the module in the module at the beginning of the code, no need to reuse
     */
-
-    //% weight=91
-    //% block="init display"
-    export function initDisplay(): void {
+    function initDisplay(): void {
         OLEDcmd(0xAE);  // Set display OFF
         OLEDcmd(0xD5);  // Set Display Clock Divide Ratio / OSC Frequency 0xD4
         OLEDcmd(0x80);  // Display Clock Divide Ratio / OSC Frequency 
@@ -327,7 +324,7 @@ namespace pinpong {
     //% block="OLED show number %n on line %line column %column"
 
     export function OLEDshowUserNumber(n: number,line: number, column:number): void {
-        pinpong.OLEDshowUserText("" + n,line, column);
+        xiamiBoard.OLEDshowUserText("" + n,line, column);
     }
 
     /**
@@ -610,12 +607,7 @@ namespace pinpong {
     export function ledBlank() {
         showColor(0)
     }
-    /**
-     * 初始化温湿度
-     */
-    //% weight=78
-    //% block="AHT20 Init"
-    export function AHT20Init(){
+    function AHT20Init(){
         pins.i2cWriteNumber(0x38, 0xBA, NumberFormat.Int8LE);
         let data=pins.i2cReadNumber(0x38, NumberFormat.Int8LE);
         if((data & 0x08) != 1){
@@ -641,17 +633,31 @@ namespace pinpong {
         let data;
         switch(state){
             case AHT20.HUM:data=((buf1[1] << 12) + (buf1[2] << 4) + (buf1[3] >> 4)) / 1048576 * 100, 2;break;
-            case AHT20.TEMP:data=(((buf1[3] & 0x0f) << 16) + (buf1[4] << 8) + (buf1[5])) / 1048576 * 200 - 50, 2;break;
+            case AHT20.TEMP:data=(((buf1[3] & 0x0f) << 16) + (buf1[4] << 8) + (buf1[5])) / 1048576 * 200 - 50
+                , 2;break;
+            
             default:break;
         }
         return Math.round(data);
+    }
+
+    //% advanced=true shim=i2c::init
+    function init(): void {
+        return;
     }
     
     /**
      * init I2C
      */
-    //% block=" I2C init"
-    export function i2cinit():void{
+    //% block="init xia_mi Board"
+    //% weight=101
+    export function initXiaMiBoard():void{
         init();
+        basic.pause(30)
+        AHT20Init()
+        basic.pause(30)
+        initDisplay()
+
     }
+
 }
