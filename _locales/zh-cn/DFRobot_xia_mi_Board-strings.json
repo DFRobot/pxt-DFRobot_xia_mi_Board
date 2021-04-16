@@ -1,0 +1,28 @@
+{
+    "name": "DFRobot_xia_mi_Board",
+    "version": "0.1.4",
+    "description": "",
+    "dependencies": {
+        "core": "*",
+        "radio": "*",
+        "microphone": "*"
+    },
+    "files": [
+        "README.md",
+        "custom.ts",
+        "sendBuffer.asm",
+        "ws2812b.ts",
+        "NecIR.cpp",
+        "i2c.cpp",
+        "_locales/zh-cn/DFRobot_xia_mi_Board-strings.json",
+        "shims.d.ts",
+        "enums.d.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
