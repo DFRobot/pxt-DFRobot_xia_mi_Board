@@ -13,6 +13,7 @@
         "sendBuffer.asm",
         "ws2812b.ts",
         "NecIR.cpp",
+        "i2c.cpp",
         "_locales/zh-cn/DFRobot_Xia_Mi_Board-strings.json",
         "shims.d.ts",
         "enums.d.ts"

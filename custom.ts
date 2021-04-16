@@ -647,4 +647,11 @@ namespace pinpong {
         return Math.round(data);
     }
     
+    /**
+     * init I2C
+     */
+    //% block=" I2C init"
+    export function i2cinit():void{
+        init();
+    }
 }
