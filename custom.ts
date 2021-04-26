@@ -489,6 +489,7 @@ namespace xiamiBoard{
     //% weight=86
     //% blockId=IR_read block="read IR key value"
     export function IR_read(): number {
+        pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
         return irCode()&0x00ff;
     }
 
@@ -496,6 +497,7 @@ namespace xiamiBoard{
     //% blockId=IR_callbackUser block="on IR received"
     //% draggableParameters
     export function IR_callbackUser(cb: (message: number) => void) {
+        pins.setPull(DigitalPin.P13, PinPullMode.PullUp)
         state = 1;
         control.onEvent(11, 22, function() {
             cb(irstate)
