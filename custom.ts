@@ -342,17 +342,17 @@ namespace xiamiBoard{
         }
         OLEDsetText(0, 0);
     }
-    //% weight=87
-    //% block="clear OLED line %line column %column1 to %column2"
-    //% line.min=0 line.max=7
-    //% column1.min=0 column1.max=15
-    //% column2.min=0 column2.max=15
-    export function clear(line:number,column1:number,column2:number){
-        OLEDsetText(line, column1);
-        for (let i=0; i < ((column2-column1)+1); i++) {
-            OLEDputChar(' ');
-        }
-    }
+    // //% weight=87
+    // //% block="clear OLED line %line column %column1 to %column2"
+    // //% line.min=0 line.max=7
+    // //% column1.min=0 column1.max=15
+    // //% column2.min=0 column2.max=15
+    // export function clear(line:number,column1:number,column2:number){
+    //     OLEDsetText(line, column1);
+    //     for (let i=0; i < ((column2-column1)+1); i++) {
+    //         OLEDputChar(' ');
+    //     }
+    // }
 
     function OLEDwriteCustomChar(c: string) {
         for (let i = 0; i < 8; i++) {
