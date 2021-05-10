@@ -530,35 +530,35 @@ namespace xiamiBoard{
      * RGB LEDs light up from A to B 
      */
     //% weight=83
-    //% from.min=1 from.max=2
-    //% to.min=1 to.max=2
-    //% to.defl=2
-    //% from.defl=1
+    //% from.min=0 from.max=1
+    //% to.min=0 to.max=1
+    //% to.defl=1
+    //% from.defl=0
     //%  block="RGB LEDs |%from to|%to"
     export function ledRange(from: number, to: number): number {
-        let _from=from-1;
-        let _to=to;
+        let _from=from;
+        let _to=to+1;
         return (_from << 16) + (2 << 8) + (_to);
     }
     /**
      * Set the color of the specified LEDs
      */
     //% weight=82
-    //% index.min=1 index.max=2
-    //% index.defl=1
+    //% index.min=0 index.max=1
+    //% index.defl=0
     //% rgb.shadow="colorNumberPicker"
     //%  block="RGB LED |%index show color|%rgb"
     export function setIndexColor(index: number, rgb: number) {
-        let f = index-1;
-        let t = index-1;
+        let f = index;
+        let t = index;
         let r = (rgb >> 16) * (_brightness / 255);
         let g = ((rgb >> 8) & 0xFF) * (_brightness / 255);
         let b = ((rgb) & 0xFF) * (_brightness / 255);
 
-        if ((index-1) > 15) {
-            if ((((index-1) >> 8) & 0xFF) == 0x02) {
-                f = (index-1) >> 16;
-                t = (index-1) & 0xff;
+        if ((index) > 15) {
+            if ((((index) >> 8) & 0xFF) == 0x02) {
+                f = (index) >> 16;
+                t = (index) & 0xff;
             } else {
                 f = 0;
                 t = -1;
