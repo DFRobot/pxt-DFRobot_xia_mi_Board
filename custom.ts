@@ -74,14 +74,14 @@ namespace xiamiBoard{
         if(index != 0x08){
             let buf=pins.createBuffer(3);
             buf[0]=index;
-            buf[1]=speed;
-            buf[2]=dir;
+            buf[1]=dir;
+            buf[2]=speed;
             pins.i2cWriteBuffer(i2cAddr, buf)
         }else{
             let buf=pins.createBuffer(3);
             buf[0]=0x00;
-            buf[1]=speed;
-            buf[2]=dir;
+            buf[1]=dir;
+            buf[2]=speed;
             pins.i2cWriteBuffer(i2cAddr, buf)
             basic.pause(50)
             buf[0]=0x02;
