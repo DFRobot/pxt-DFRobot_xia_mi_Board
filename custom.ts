@@ -133,7 +133,7 @@ namespace xiamiBoard{
     //% state.min=0 state.max=1
     //% state1.min=0 state1.max=1
     //% state2.min=0 state2.max=1
-    //% blockId=pinpong_LED block="Red LED %state Yellow LED %state1 Green LED %state2"
+    //% blockId=pinpong_LED block="set traffic lights Red LED %state Yellow LED %state1 Green LED %state2"
     export function LED(state:number,state1:number,state2:number){
         let buf=pins.createBuffer(2);
         buf[0]=0X8;
@@ -150,7 +150,7 @@ namespace xiamiBoard{
      * 获取旋转编码器数据
      */
     //% weight=97
-    //% blockId=pinpong_readAngle block="read angle number"
+    //% blockId=pinpong_readAngle block="obtain angle sensor data"
     export function readAngle():number{
         pins.i2cWriteNumber(i2cAddr, 0X0B, NumberFormat.Int8LE);
         let buf = pins.i2cReadBuffer(i2cAddr, 2)
@@ -161,7 +161,7 @@ namespace xiamiBoard{
      * 获取火焰传感器数据
      */
     //% weight=96
-    //% blockId=pinpong_readFlame block="read flre sensor number"
+    //% blockId=pinpong_readFlame block="get fire sensor number"
     export function readFlre():number{
         pins.i2cWriteNumber(i2cAddr, 0x0D, NumberFormat.Int8LE);
         let buf = pins.i2cReadBuffer(i2cAddr, 2);
@@ -172,7 +172,7 @@ namespace xiamiBoard{
      * 获取电机方向和速度
      */
     //% weight=95
-    //% blockId=pinpong_motorState block="motor %motor state %state"
+    //% blockId=pinpong_motorState block="get motor %motor state %state"
     export function motorState(motor:MOTOR, state:STATE):number{
         pins.i2cWriteNumber(i2cAddr, motor, NumberFormat.Int8LE);
         let buf = pins.i2cReadBuffer(i2cAddr, 2);
@@ -188,7 +188,7 @@ namespace xiamiBoard{
      * 获取交通灯状态
      */
     //% weight=94
-    //%blockId=pinpong_LDEState block="%color LED state"
+    //%blockId=pinpong_LDEState block="get traffic light status %color"
     export function LEDState(color:LED):number{
         pins.i2cWriteNumber(i2cAddr, color, NumberFormat.Int8LE);
         return pins.i2cReadNumber(i2cAddr, NumberFormat.Int8LE);
@@ -197,7 +197,7 @@ namespace xiamiBoard{
      * 控制继电器
      */
     //% weight=93
-    //%blockId=pinpong_setRelay block="%state relay"
+    //%blockId=pinpong_setRelay block="relay %state"
     export function setRelay(state:RELAY){
         switch(state){
             case RELAY.CLOSE: pins.digitalWritePin(DigitalPin.P9, 1);break;
@@ -209,7 +209,7 @@ namespace xiamiBoard{
      * 获取超声波数据
      */
     //%weight=92
-    //% blockId=ultrasonic_sensor block="read ultrasonic sensor (cm)"
+    //% blockId=ultrasonic_sensor block="get ultrasonic sensor (cm)"
     export function Ultrasonic(maxCmDistance = 500): number {
         let d
         pins.digitalWritePin(DigitalPin.P0, 1);
