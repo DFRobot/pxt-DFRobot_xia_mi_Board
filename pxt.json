@@ -1,6 +1,6 @@
 {
     "name": "DFRobot_xia_mi_Board",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "description": "",
     "dependencies": {
         "core": "*",
