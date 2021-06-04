@@ -10,6 +10,16 @@ enum MOTOR {
     //%block="ALL"
     ALL=0X08
 }
+enum MOTOR1 {
+    //% block="M1"
+    M1=0X00,
+    //% block="M2"
+    M2=0X02,
+    //% block="M3"
+    M3=0X04,
+    //%block="M4"
+    M4=0X06,
+}
 
 enum DIRECTION {
     //% block="CW"
@@ -173,7 +183,7 @@ namespace xiamiBoard{
      */
     //% weight=95
     //% blockId=pinpong_motorState block="get motor %motor state %state"
-    export function motorState(motor:MOTOR, state:STATE):number{
+    export function motorState(motor:MOTOR1, state:STATE):number{
         pins.i2cWriteNumber(i2cAddr, motor, NumberFormat.Int8LE);
         let buf = pins.i2cReadBuffer(i2cAddr, 2);
         let data;
