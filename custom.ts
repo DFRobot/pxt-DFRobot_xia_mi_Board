@@ -53,9 +53,9 @@ enum LED {
 
 enum RELAY{
     //% block="Close"
-    CLOSE,
+    CLOSE = 0x01,
     //% block="Discon"
-    DISCON
+    DISCON = 0x00
 }
 enum AHT20{
     //% block="Temperature"
@@ -209,11 +209,11 @@ namespace xiamiBoard{
     //% weight=93
     //%blockId=pinpong_setRelay block="relay %state"
     export function setRelay(state:RELAY){
-        switch(state){
-            case RELAY.CLOSE: pins.digitalWritePin(DigitalPin.P9, 1);break;
-            case RELAY.DISCON:pins.digitalWritePin(DigitalPin.P9, 0);break;
-            default:break;
-        }
+        let buf = pins.createBuffer(2);
+        buf[0] = 0X13;
+        buf[1] = state;
+        pins.i2cWriteBuffer(i2cAddr, buf);
+
     }
     /**
      * 获取超声波数据
