@@ -52,9 +52,9 @@ enum LED {
 }
 
 enum RELAY{
-    //% block="Close"
+    //% block="Actuation"
     CLOSE = 0x01,
-    //% block="Discon"
+    //% block="Release"
     DISCON = 0x00
 }
 enum AHT20{
