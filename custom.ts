@@ -178,31 +178,31 @@ namespace xiamiBoard{
         let data = buf[0]<<8|buf[1];
         return data;
     }
-    /**
-     * 获取电机方向和速度
-     */
-    //% weight=95
-    //% blockId=pinpong_motorState block="get motor %motor state %state"
-    export function motorState(motor:MOTOR1, state:STATE):number{
-        pins.i2cWriteNumber(i2cAddr, motor, NumberFormat.Int8LE);
-        let buf = pins.i2cReadBuffer(i2cAddr, 2);
-        let data;
-        switch(state){
-            case STATE.SPEED: data = buf[0];break;
-            case STATE.DIR: data = buf[1];break;
-            default:break;
-        }
-        return data;
-    }
-    /**
-     * 获取交通灯状态
-     */
-    //% weight=94
-    //%blockId=pinpong_LDEState block="get traffic light status %color"
-    export function LEDState(color:LED):number{
-        pins.i2cWriteNumber(i2cAddr, color, NumberFormat.Int8LE);
-        return pins.i2cReadNumber(i2cAddr, NumberFormat.Int8LE);
-    }
+    // /**
+    //  * 获取电机方向和速度
+    //  */
+    // //% weight=95
+    // //% blockId=pinpong_motorState block="get motor %motor state %state"
+    // export function motorState(motor:MOTOR1, state:STATE):number{
+    //     pins.i2cWriteNumber(i2cAddr, motor, NumberFormat.Int8LE);
+    //     let buf = pins.i2cReadBuffer(i2cAddr, 2);
+    //     let data;
+    //     switch(state){
+    //         case STATE.SPEED: data = buf[0];break;
+    //         case STATE.DIR: data = buf[1];break;
+    //         default:break;
+    //     }
+    //     return data;
+    // }
+    // /**
+    //  * 获取交通灯状态
+    //  */
+    // //% weight=94
+    // //%blockId=pinpong_LDEState block="get traffic light status %color"
+    // export function LEDState(color:LED):number{
+    //     pins.i2cWriteNumber(i2cAddr, color, NumberFormat.Int8LE);
+    //     return pins.i2cReadNumber(i2cAddr, NumberFormat.Int8LE);
+    // }
     /**
      * 控制继电器
      */
