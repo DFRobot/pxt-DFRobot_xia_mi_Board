@@ -209,10 +209,15 @@ namespace xiamiBoard{
     //% weight=93
     //%blockId=pinpong_setRelay block="relay %state"
     export function setRelay(state:RELAY){
-        let buf = pins.createBuffer(2);
-        buf[0] = 0X13;
-        buf[1] = state;
-        pins.i2cWriteBuffer(i2cAddr, buf);
+        // let buf = pins.createBuffer(2);
+        // buf[0] = 0X13;
+        // buf[1] = state;
+        // pins.i2cWriteBuffer(i2cAddr, buf);
+        switch (state) {
+            case RELAY.CLOSE: pins.digitalWritePin(DigitalPin.P9, 1); break;
+            case RELAY.DISCON: pins.digitalWritePin(DigitalPin.P9, 0); break;
+            default: break;
+        }
 
     }
     /**
