@@ -220,6 +220,17 @@ namespace xiamiBoard{
         }
 
     }
+     /**
+     * 控制继电器
+     */
+    //% weight=5
+    //%blockId=pinpong_setRelayTest block="relay %state (test)"
+    export function setRelayTest(state:RELAY){
+        let buf = pins.createBuffer(2);
+        buf[0] = 0X13;
+        buf[1] = state;
+        pins.i2cWriteBuffer(i2cAddr, buf);
+    }
     /**
      * 获取超声波数据
      */
