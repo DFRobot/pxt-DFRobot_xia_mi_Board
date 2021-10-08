@@ -669,10 +669,10 @@ namespace xiamiBoard{
         return Math.round(data);
     }
 
-    //% advanced=true shim=i2c::init
-    function init(): void {
-        return;
-    }
+    // // advanced=true shim=i2c::init
+    // function init(): void {
+    //     return;
+    // }
     
     /**
      * init I2C
@@ -680,7 +680,7 @@ namespace xiamiBoard{
     //% block="init xia_mi Board"
     //% weight=101
     export function initXiaMiBoard():void{
-        init();
+        //init();
         basic.pause(30)
         AHT20Init()
         basic.pause(30)

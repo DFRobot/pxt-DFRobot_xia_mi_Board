@@ -7,11 +7,4 @@
 declare namespace maqueenIRV2 {
 }
 
-
-
-    //% color=50 weight=80
-    //% icon="\uf1eb"
-declare namespace i2c {
-}
-
 // Auto-generated. Do not edit. Really.
