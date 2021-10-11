@@ -36,5 +36,6 @@
     "xiamiBoard.clear|block": "清除显示屏 行 %line 从 %column1 列到 %column2 列",
     "xiamiBoard.IR_callbackUser|block": "当红外接收到数据时运行",
     "xiamiBoard.IR_read|block": "获取红外键值",
-    "MOTOR.ALL|block": "全部"
+    "MOTOR.ALL|block": "全部",
+    "xiamiBoard.alignment|block":"校准数据 %data 按 %len 位"
 }

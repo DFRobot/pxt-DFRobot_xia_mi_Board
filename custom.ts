@@ -51,6 +51,17 @@ enum LED {
     GN=0X0A
 }
 
+enum ALIGNMENT{
+    //% block="2"
+    TOW = 2,
+    //% block="3"
+    THREE = 3,
+    //% block="4"
+    FOUR = 4,
+    //% block="5"
+    FIVE = 5
+}
+
 enum RELAY{
     //% block="Actuation"
     CLOSE = 0x01,
@@ -686,6 +697,21 @@ namespace xiamiBoard{
         basic.pause(30)
         initDisplay()
 
+    }
+
+    //% block="Correct data %data by %len bits"
+    //%weight=2
+    export function alignment(data: number ,len: ALIGNMENT):string{
+        let _data = data.toString();
+        if (len > _data.length){
+            let j = (len - _data.length)
+            for (let i = 0; i < j;i++){
+                _data = ' ' + _data;
+            }   
+        }else{
+            _data = _data.slice(0, len);
+        }
+        return _data;
     }
 
 }
