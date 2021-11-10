@@ -14,7 +14,7 @@
         "NecIR.cpp",
         "i2c.cpp",
         "_locales/zh-cn/DFRobot_xia_mi_Board-strings.json",
-		"_locales/zh-tw/DFRobot_xia_mi_Board-strings.json",
+        "_locales/zh-tw/DFRobot_xia_mi_Board-strings.json",
         "shims.d.ts",
         "enums.d.ts"
     ],
@@ -22,7 +22,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "4.0.11",
+        "target": "4.0.16",
         "targetId": "microbit"
     },
     "supportedTargets": [
