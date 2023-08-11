@@ -68,7 +68,16 @@ enum RELAY{
     //% block="Release"
     DISCON = 0x00
 }
-enum AHT20{
+
+enum SENSOR{
+    //% block="AHT20(V1)"
+    AHT20,
+    //% block="SHTC3(V2)"
+    SHTC3
+
+}
+
+enum PARA{
     //% block="Temperature"
     TEMP,
     //% block="Humidity"
@@ -646,37 +655,66 @@ namespace xiamiBoard{
     export function ledBlank() {
         showColor(0)
     }
-    function AHT20Init(){
-        pins.i2cWriteNumber(0x38, 0xBA, NumberFormat.Int8LE);
-        let data=pins.i2cReadNumber(0x38, NumberFormat.Int8LE);
-        if((data & 0x08) != 1){
-        let buf=pins.createBuffer(3)
-            buf[0]=0xBE;
-            buf[1]=0X08;
-            buf[2]=0x00;
-            pins.i2cWriteBuffer(0x38, buf)
+
+    //% weight=78
+    //% block="init %sensor temperature and humidity sensor"
+    function tempHumiInit(sensor:SENSOR){
+        if(sensor == SENSOR.AHT20){
+            pins.i2cWriteNumber(0x38, 0xBA, NumberFormat.Int8LE);
+            let data=pins.i2cReadNumber(0x38, NumberFormat.Int8LE);
+            if((data & 0x08) != 1){
+            let buf=pins.createBuffer(3)
+                buf[0]=0xBE;
+                buf[1]=0X08;
+                buf[2]=0x00;
+                pins.i2cWriteBuffer(0x38, buf)
+            }
+        } else {
+            pins.i2cWriteBuffer(0x70, pins.createBufferFromArray(wordToByte(0x3517)));
+            basic.pause(5);  //wake up
+            pins.i2cWriteBuffer(0x70, pins.createBufferFromArray(wordToByte(0x805D)));
+            basic.pause(5);  //soft reset
+            // pins.i2cWriteBuffer(0x70, pins.createBufferFromArray(wordToByte(0xB098)));
+            // basic.pause(5);  //sleep
+            while(1) {
+                if(getShtc3DeviceID() != 0) {
+                    break;
+                }
+                basic.pause(1000);
+            }
+
         }
+        
     }
     /**
      * 获取温湿度数据
      */
     //% weight=77
-    //% block="read %state"
-    export function readAHT20(state:AHT20):number{
-        let buf=pins.createBuffer(3);
+    //% block="read %sensor %state"
+    export function readSensor(sensor:SENSOR, state:PARA): number{
+        let data;
+        if(sensor == SENSOR.AHT20) {
+            let buf=pins.createBuffer(3);
             buf[0]=0xAC;
             buf[1]=0X33;
             buf[2]=0x00;
             pins.i2cWriteBuffer(0x38, buf);
-        let buf1=pins.i2cReadBuffer(0x38, 7);
-        let data;
-        switch(state){
-            case AHT20.HUM:data=((buf1[1] << 12) + (buf1[2] << 4) + (buf1[3] >> 4)) / 1048576 * 100, 2;break;
-            case AHT20.TEMP:data=(((buf1[3] & 0x0f) << 16) + (buf1[4] << 8) + (buf1[5])) / 1048576 * 200 - 50
-                , 2;break;
-            
-            default:break;
+            let buf1=pins.i2cReadBuffer(0x38, 7);
+            switch(state){
+                case PARA.HUM:data=((buf1[1] << 12) + (buf1[2] << 4) + (buf1[3] >> 4)) / 1048576 * 100, 2;break;
+                case PARA.TEMP:data=(((buf1[3] & 0x0f) << 16) + (buf1[4] << 8) + (buf1[5])) / 1048576 * 200 - 50
+                    , 2;break;
+                
+                default:break;
+            }
+        } else {
+            switch(state){
+                case PARA.HUM:data = getShtc3Humidity(0x7866); break;
+                case PARA.TEMP:data = getShtc3Temperature(0x7CA2); break;
+                default: break;
+            }
         }
+        
         return Math.round(data);
     }
 
@@ -693,7 +731,7 @@ namespace xiamiBoard{
     export function initXiaMiBoard():void{
         //init();
         basic.pause(30)
-        AHT20Init()
+        // AHT20Init()
         basic.pause(30)
         initDisplay()
 
@@ -712,6 +750,87 @@ namespace xiamiBoard{
             _data = _data.slice(0, len);
         }
         return _data;
+    }
+
+    function getShtc3DeviceID(): number {
+        let id1 = 0;
+        let id = 0;
+        pins.i2cWriteBuffer(0x70, pins.createBufferFromArray(wordToByte(0xEFC8)));
+        basic.pause(15);
+        let idArray = pins.i2cReadBuffer(0x70, 3);
+        if(checkShtcCrc(idArray[0], idArray[1], idArray[2])){
+            id1 = (idArray[0] << 8 ) | idArray[1];
+            if((id1 & 0x807) == 0x807){
+                id = id1;
+            } else{
+                id = 0;
+            }
+        } else{
+            id = 0 ;
+        }
+        return id;
+    }
+
+    function getShtc3Humidity(mode: number): number{
+        let data;
+        while(1){
+            data = getShtcTandRHRawData(mode);
+            if (data[2] == 1) {
+                break;
+            }
+            basic.pause(1000);
+        }
+        return (data[1] * 100.0) / 65536;
+    }
+
+    function getShtc3Temperature(mode: number): number{
+        let data;
+        while(1){
+            data = getShtcTandRHRawData(mode);
+            if (data[2] == 1) {
+                break;
+            }
+            basic.pause(1000);
+        }
+        return -45 + 175 * (data[0] / 65536);
+    }
+
+    function getShtcTandRHRawData(mode: number): number[]{
+        let temp: number[] = [0, 0, 0];
+        pins.i2cWriteBuffer(0x70, pins.createBufferFromArray(wordToByte(mode)));
+        basic.pause(15);
+        let data = pins.i2cReadBuffer(0x70, 6);
+        if(checkShtcCrc(data[0], data[1], data[2]) && checkShtcCrc(data[3], data[4], data[5])){
+            temp[0] = ( data[0] << 8 ) | data[1]; //temp
+            temp[1] = ( data[3] << 8 ) | data[4]; //humi
+            temp[2] = 1;
+        }
+        return temp;
+    }
+
+    function checkShtcCrc(data1: number, data2: number, crcValue: number): boolean{
+        let crc = 0xFF;
+        let crcData = [data1, data2];
+        let ret = true;
+        for(let i = 0; i < 2; i++ ){
+            crc ^= crcData[i];
+            for(let bit = 8; bit > 0; --bit){
+                if(crc & 0x80){
+                    crc = ( crc << 1 ) ^ 0x31;
+                } else{
+                    crc = ( crc << 1 );
+                }
+            }
+        }
+        if(crc != crcValue){
+            ret = false;
+        }
+        return ret;
+    }
+
+
+    function wordToByte(reg: number): number[] {
+        return [reg >> 8, reg & 0xff];
     }
 
 }
