@@ -658,7 +658,8 @@ namespace xiamiBoard{
 
     //% weight=78
     //% block="init %sensor temperature and humidity sensor"
-    function tempHumiInit(sensor:SENSOR){
+    export function tempHumiInit(sensor:SENSOR){
+        basic.pause(30);
         if(sensor == SENSOR.AHT20){
             pins.i2cWriteNumber(0x38, 0xBA, NumberFormat.Int8LE);
             let data=pins.i2cReadNumber(0x38, NumberFormat.Int8LE);
@@ -816,9 +817,9 @@ namespace xiamiBoard{
             crc ^= crcData[i];
             for(let bit = 8; bit > 0; --bit){
                 if(crc & 0x80){
-                    crc = ( crc << 1 ) ^ 0x31;
+                    crc = (( crc << 1 ) & 0xff) ^ 0x31;
                 } else{
-                    crc = ( crc << 1 );
+                    crc = ((crc << 1) & 0xff);
                 }
             }
         }
