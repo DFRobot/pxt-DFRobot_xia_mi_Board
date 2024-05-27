@@ -22,7 +22,7 @@
     "xiamiBoard.readFlre|block": "讀取火焰感測器數值",
     "xiamiBoard.motorState|block": "获取电机 %motor 状态 %state",
     "xiamiBoard.LEDState|block": "获取交通灯状态 %color",
-    "xiamiBoard.setRelay|block": "繼電器 %state",
+    "xiamiBoard.setRelay|block": "繼電器 %version %state",
     "xiamiBoard.Ultrasonic|block": "讀取超音波數值（cm）",
     "xiamiBoard.setBrightness|block": "設置RGB燈亮度為|%brightness",
     "xiamiBoard.showColor|block": "設置RGB燈顯示顏色|%rgb",

@@ -16,13 +16,14 @@
         "_locales/zh-cn/DFRobot_xia_mi_Board-strings.json",
         "_locales/zh-tw/DFRobot_xia_mi_Board-strings.json",
         "shims.d.ts",
-        "enums.d.ts"
+        "enums.d.ts",
+        "main.py"
     ],
     "testFiles": [
         "test.ts"
     ],
     "targetVersions": {
-        "target": "6.0.17",
+        "target": "6.0.28",
         "targetId": "microbit"
     },
     "supportedTargets": [

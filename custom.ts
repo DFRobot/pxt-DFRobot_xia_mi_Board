@@ -69,6 +69,13 @@ enum RELAY{
     DISCON = 0x00
 }
 
+enum RELAYVERSION {
+    //% block="V1"
+    V1 = 0x01,
+    //% block="V2"
+    V2 = 0x00
+}
+
 enum SENSOR{
     //% block="AHT20(V1)"
     AHT20,
@@ -227,24 +234,32 @@ namespace xiamiBoard{
      * 控制继电器
      */
     //% weight=93
-    //%blockId=pinpong_setRelay block="relay %state"
-    export function setRelay(state:RELAY){
+    //%blockId=pinpong_setRelay block="relay %version %state"
+    export function setRelay(version:RELAYVERSION, state:RELAY){
         // let buf = pins.createBuffer(2);
         // buf[0] = 0X13;
         // buf[1] = state;
         // pins.i2cWriteBuffer(i2cAddr, buf);
-        switch (state) {
-            case RELAY.CLOSE: pins.digitalWritePin(DigitalPin.P9, 1); break;
-            case RELAY.DISCON: pins.digitalWritePin(DigitalPin.P9, 0); break;
-            default: break;
+        if (version == RELAYVERSION.V1)
+        {
+            switch (state) {
+                case RELAY.CLOSE: pins.digitalWritePin(DigitalPin.P9, 1); break;
+                case RELAY.DISCON: pins.digitalWritePin(DigitalPin.P9, 0); break;
+                default: break;
+            }
+        } else {
+            let buf = pins.createBuffer(2);
+            buf[0] = 0X13;
+            buf[1] = state;
+            pins.i2cWriteBuffer(i2cAddr, buf);
         }
-
     }
      /**
      * 控制继电器
      */
     //% weight=5
     //%blockId=pinpong_setRelayTest block="relay %state (test)"
+    //% deprecated=true
     export function setRelayTest(state:RELAY){
         let buf = pins.createBuffer(2);
         buf[0] = 0X13;
@@ -265,20 +280,36 @@ namespace xiamiBoard{
             pins.digitalWritePin(DigitalPin.P0, 0);
             //sleep_us(2);
             pins.digitalWritePin(DigitalPin.P0, 1);
-            //sleep_us(10);
+            // sleep_us(10);
             pins.digitalWritePin(DigitalPin.P0, 0);
-            d = pins.pulseIn(DigitalPin.P1, PulseValue.High, maxCmDistance * 58);//readPulseIn(1);
+            d = pins.pulseIn(DigitalPin.P1, PulseValue.High, maxCmDistance * 58)//readPulseIn(1);
         } else {
-            pins.digitalWritePin(DigitalPin.P0, 0);
             pins.digitalWritePin(DigitalPin.P0, 1);
+            pins.digitalWritePin(DigitalPin.P0, 0);
             d = pins.pulseIn(DigitalPin.P1, PulseValue.Low, maxCmDistance * 58);//readPulseIn(0);
         }
-        let x = d / 39;
+        let x = d / 59;
         if (x <= 0 || x > 500) {
             return 0;
         }
-        return Math.round(x);
+        return Math.round(x) ;
     }
+
+    // function mypulseIn(pin: DigitalPin, value: number, maxDuration: number): number {
+    //     let tick = control.micros();
+    //     let maxd = maxDuration;
+    //     while (pins.digitalReadPin(pin) != value) {
+    //         if (control.micros() - tick > maxd)
+    //             return 0;
+    //     }
+    //     let start = control.micros();
+    //     while (pins.digitalReadPin(pin) == value) {
+    //         if (control.micros() - tick > maxd)
+    //             return 0;
+    //     }
+    //     let end = control.micros();
+    //     return end - start;
+    // }
     
     /**
     * Initialize OLED, just put the module in the module at the beginning of the code, no need to reuse
