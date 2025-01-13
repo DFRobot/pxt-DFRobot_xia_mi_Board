@@ -10,7 +10,6 @@
         "README.md",
         "custom.ts",
         "sendBuffer.asm",
-        "ws2812b.ts",
         "NecIR.cpp",
         "i2c.cpp",
         "_locales/zh-cn/DFRobot_xia_mi_Board-strings.json",
